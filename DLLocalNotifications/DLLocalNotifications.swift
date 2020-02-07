@@ -266,11 +266,13 @@ public class DLNotificationScheduler {
         notification.soundName = sound
         // Create multiple Notifications
         
-        self.repeats(notification: notification, fromDate: fromDate, toDate: toDate, interval: interval, repeats: repeats, category: category, sound: sound)
+        self.repeats(notification: notification, toDate: toDate, interval: interval, repeats: repeats, category: category, sound: sound)
         
     }
     
-    public func repeats(notification: DLNotification, fromDate: Date, toDate: Date, interval: Double, repeats: RepeatingInterval, category: String = " ", sound: String = " ") {
+    public func repeats(notification: DLNotification, toDate: Date, interval: Double, repeats: RepeatingInterval, category: String = " ", sound: String = " ") {
+        
+        let fromDate = notification.fireDate ?? Date()
         
         self.queueNotification(notification: notification)
         let intervalDifference = Int( toDate.timeIntervalSince(fromDate) / interval )
