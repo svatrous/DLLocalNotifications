@@ -266,6 +266,12 @@ public class DLNotificationScheduler {
         notification.soundName = sound
         // Create multiple Notifications
         
+        self.repeats(notification: notification, fromDate: fromDate, toDate: toDate, interval: interval, repeats: repeats, category: category, sound: sound)
+        
+    }
+    
+    public func repeats(notification: DLNotification, fromDate: Date, toDate: Date, interval: Double, repeats: RepeatingInterval, category: String = " ", sound: String = " ") {
+        
         self.queueNotification(notification: notification)
         let intervalDifference = Int( toDate.timeIntervalSince(fromDate) / interval )
         
@@ -276,14 +282,13 @@ public class DLNotificationScheduler {
             // Next notification Date
             
             nextDate = nextDate.addingTimeInterval(interval)
-            let identifier = identifier + String(i + 1)
+            let identifier = (notification.identifier ?? " ") + String(i + 1)
             
-            let notification = DLNotification(identifier: identifier, alertTitle: alertTitle, alertBody: alertBody, date: nextDate, repeats: repeats)
+            let notification = DLNotification(identifier: identifier, alertTitle: notification.alertTitle ?? " ", alertBody: notification.alertBody ?? " ", date: nextDate, repeats: repeats)
             notification.category = category
             notification.soundName = sound
             self.queueNotification(notification: notification)
         }
-        
     }
     
     public func scheduleCategories(categories: [DLCategory]) {
